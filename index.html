@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Train Scheduler</title>
+
+    <!-- Firebase link -->
+  <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-database.js"></script>
+
+    <!-- links to style and javascript -->
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="javascript" href="assets/javascript.js">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+    <!-- links to moment.js -->
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    
+</head>
+<body>
+
+  <!-- Jumboron header with title -->
+<div class="Container" style= "margin: 0 5% 0 5%" >
+        <div class="jumbotron text-center">
+                <h1 class="display-4">Train Scheduler</h1>
+                <p class="lead">See train schedules in real time!</p>         
+              </div>
+             
+                <!-- Table with hover effect -->
+                  <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          
+                  <table class="table table-hover" id="traintable">
+                    <thead>
+                      <tr>
+                      
+                        <th scope="col">Train Name</th>
+                        <th scope="col">Destination</th>
+                        
+                        <th scope="col">Frequency</th>
+                        <th scope="col">Next Arrival</th>
+                        <th scope="col">Minutes Away</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    
+                    </tbody>
+                  </table>
+
+                  <br>
+
+                  <div class="card">
+                    <div class="card-header">
+                      Add a Train
+                    </div>
+                    <form>
+                      <div class="form-group">
+                        <label for="formGroupExampleInput">Train Name</label>
+                        <input type="text" class="form-control" id="trainNameInput" placeholder="Polar Express">
+                      </div>
+                      <div class="form-group">
+                        <label for="formGroupExampleInput2">Destination</label>
+                        <input type="text" class="form-control" id="destinationInput" placeholder="North Pole">
+                      </div>
+                      <div class="form-group">
+                        <label for="formGroupExampleInput2">First Train Time (Military Time HH:mm)</label>
+                        <input type="text" class="form-control" id="trainTimeInput" placeholder="13:45">
+                      </div>
+                      <div class="form-group">
+                        <label for="formGroupExampleInput2">Frequency (min)</label>
+                        <input type="text" class="form-control" id="frequencyInput" placeholder="180">
+                      </div>
+                      <center>
+                      <div><button type="button" class="btn btn-primary btn-lg text-center" id="addTrainBtn">Add Train!</button></div>
+                      </center>
+                    </form>
+
+                     
+                    </div>
+                  </div>
+
+        
+ </div>
+
+  
+
+</body>
+</html>
