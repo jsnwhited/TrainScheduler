@@ -1,6 +1,6 @@
 # TrainScheduler
 
-[I'm an inline-style link](https://jsnwhited.github.io/TrainScheduler/)
+[Try It!](https://jsnwhited.github.io/TrainScheduler/)
 
 A train schedule app that shows arrival and departure data
 
