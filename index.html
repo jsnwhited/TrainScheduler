@@ -6,92 +6,267 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Train Scheduler</title>
 
-    <!-- Firebase link -->
-  <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-database.js"></script>
-
-    <!-- links to style and javascript -->
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="javascript" href="assets/javascript.js">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+<!-- links to style and bootstrap -->
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+
+    <!-- Firebase link -->
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
 
     <!-- links to moment.js -->
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-    
+    <script src= "javascript.js"></script>
+
 </head>
 <body>
 
-  <!-- Jumboron header with title -->
-<div class="Container" style= "margin: 0 5% 0 5%" >
-        <div class="jumbotron text-center">
-                <h1 class="display-4">Train Scheduler</h1>
-                <p class="lead">See train schedules in real time!</p>         
-              </div>
-             
-                <!-- Table with hover effect -->
-                  <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          
-                  <table class="table table-hover" id="traintable">
-                    <thead>
-                      <tr>
-                      
-                        <th scope="col">Train Name</th>
-                        <th scope="col">Destination</th>
-                        
-                        <th scope="col">Frequency</th>
-                        <th scope="col">Next Arrival</th>
-                        <th scope="col">Minutes Away</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    
-                    </tbody>
-                  </table>
+<!-- Train Time -->
+<div class="container">
+  <!-- Jumbotron -->
+  <div class="jumbotron" style="background-color: rgb(112, 191, 236); color: white">
+    <h1 class="text-center"> &#10052 Winter Train Schedule &#10052</h1>
+    
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- Train Schedule -->
+      <div class="card">
+        <div class="card-header">
+          Current Train Schedule
+        </div>
+        <div class="card-body">
+          <table class="table table-hover" id='train-table'>
+            <thead>
+              <tr>
+                <th>Train Name</th>
+                <th>Destination</th>
+                <th>Frequency (min)</th>
+                <th>Next Arrival</th>
+                <th>Minutes Away</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Add Train  -->
+      <div class="card mt-2">
+        <div class="card-header">
+          Add Train
+        </div>
+        <div class="card-body">
+          <!-- Entry Form -->
+          <form>
+            <div class="form-group">
+              <label for="train-name-input">Train Name</label>
+              <input placeholder="Polar Express" type="text" class="form-control" id="train-name-input">
+            </div>
+            <div class="form-group">
+              <label for="destination-input">Destination</label>
+              <input placeholder="North Pole" type="text" class="form-control" id="destination-input">
+            </div>
+            <div class="form-group">
+              <label for="first-train-input">First Train Time (HH:mm - military time)</label>
+              <input placeholder="12:00" type="text" class="form-control" id="first-train-input">
+            </div>
+            <div class="form-group">
+              <label for="frequency-input">Frequency (min)</label>
+              <input placeholder="240" type="text" class="form-control" id="frequency-input">
+            </div>
+            <button type="submit" class="btn btn-primary" id="add-train-btn">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-                  <br>
+<!-- SnowFlake Snippet -->
 
-                  <div class="card">
-                    <div class="card-header">
-                      Add a Train
-                    </div>
-                    <form>
-                      <div class="form-group">
-                        <label for="formGroupExampleInput">Train Name</label>
-                        <input type="text" class="form-control" id="trainNameInput" placeholder="Polar Express">
-                      </div>
-                      <div class="form-group">
-                        <label for="formGroupExampleInput2">Destination</label>
-                        <input type="text" class="form-control" id="destinationInput" placeholder="North Pole">
-                      </div>
-                      <div class="form-group">
-                        <label for="formGroupExampleInput2">First Train Time (Military Time HH:mm)</label>
-                        <input type="text" class="form-control" id="trainTimeInput" placeholder="13:45">
-                      </div>
-                      <div class="form-group">
-                        <label for="formGroupExampleInput2">Frequency (min)</label>
-                        <input type="text" class="form-control" id="frequencyInput" placeholder="180">
-                      </div>
-                      <center>
-                      <div><button type="button" class="btn btn-primary btn-lg text-center" id="addTrainBtn">Add Train!</button></div>
-                      </center>
-                    </form>
 
-                     
-                    </div>
-                  </div>
 
-        
- </div>
+<div id="snowflakeContainer">
+  <span class="snowflake"></span>
+</div>
+
+<script>
+  // Array to store our Snowflake objects
+  var snowflakes = [];
+
+  // Global variables to store our browser's window size
+  var browserWidth;
+  var browserHeight;
+
+  // Specify the number of snowflakes you want visible
+  var numberOfSnowflakes = 50;
+
+  // Flag to reset the position of the snowflakes
+  var resetPosition = false;
+
+  // Handle accessibility
+  var enableAnimations = false;
+  var reduceMotionQuery = matchMedia("(prefers-reduced-motion)");
+
+  // Handle animation accessibility preferences 
+  function setAccessibilityState() {
+    if (reduceMotionQuery.matches) {
+      enableAnimations = false;
+    } else { 
+      enableAnimations = true;
+    }
+  }
+  setAccessibilityState();
+
+  reduceMotionQuery.addListener(setAccessibilityState);
+
+  //
+  // It all starts here...
+  //
+  function setup() {
+    if (enableAnimations) {
+      window.addEventListener("DOMContentLoaded", generateSnowflakes, false);
+      window.addEventListener("resize", setResetFlag, false);
+    }
+  }
+  setup();
+
+  //
+  // Constructor for our Snowflake object
+  //
+  function Snowflake(element, speed, xPos, yPos) {
+    // set initial snowflake properties
+    this.element = element;
+    this.speed = speed;
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.scale = 1;
+
+    // declare variables used for snowflake's motion
+    this.counter = 0;
+    this.sign = Math.random() < 0.5 ? 1 : -1;
+
+    // setting an initial opacity and size for our snowflake
+    this.element.style.opacity = (.1 + Math.random()) / 3;
+  }
+
+  //
+  // The function responsible for actually moving our snowflake
+  //
+  Snowflake.prototype.update = function () {
+    // using some trigonometry to determine our x and y position
+    this.counter += this.speed / 5000;
+    this.xPos += this.sign * this.speed * Math.cos(this.counter) / 40;
+    this.yPos += Math.sin(this.counter) / 40 + this.speed / 30;
+    this.scale = .5 + Math.abs(10 * Math.cos(this.counter) / 20);
+
+    // setting our snowflake's position
+    setTransform(Math.round(this.xPos), Math.round(this.yPos), this.scale, this.element);
+
+    // if snowflake goes below the browser window, move it back to the top
+    if (this.yPos > browserHeight) {
+      this.yPos = -50;
+    }
+  }
+
+  //
+  // A performant way to set your snowflake's position and size
+  //
+  function setTransform(xPos, yPos, scale, el) {
+    el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0) scale(${scale}, ${scale})`;
+  }
+
+  //
+  // The function responsible for creating the snowflake
+  //
+  function generateSnowflakes() {
+
+    // get our snowflake element from the DOM and store it
+    var originalSnowflake = document.querySelector(".snowflake");
+
+    // access our snowflake element's parent container
+    var snowflakeContainer = originalSnowflake.parentNode;
+    snowflakeContainer.style.display = "block";
+
+    // get our browser's size
+    browserWidth = document.documentElement.clientWidth;
+    browserHeight = document.documentElement.clientHeight;
+
+    // create each individual snowflake
+    for (var i = 0; i < numberOfSnowflakes; i++) {
+
+      // clone our original snowflake and add it to snowflakeContainer
+      var snowflakeClone = originalSnowflake.cloneNode(true);
+      snowflakeContainer.appendChild(snowflakeClone);
+
+      // set our snowflake's initial position and related properties
+      var initialXPos = getPosition(50, browserWidth);
+      var initialYPos = getPosition(50, browserHeight);
+      var speed = 5 + Math.random() * 40;
+
+      // create our Snowflake object
+      var snowflakeObject = new Snowflake(snowflakeClone,
+        speed,
+        initialXPos,
+        initialYPos);
+      snowflakes.push(snowflakeObject);
+    }
+
+    // remove the original snowflake because we no longer need it visible
+    snowflakeContainer.removeChild(originalSnowflake);
+
+    moveSnowflakes();
+  }
+
+  //
+  // Responsible for moving each snowflake by calling its update function
+  //
+  function moveSnowflakes() {
+
+    if (enableAnimations) {
+      for (var i = 0; i < snowflakes.length; i++) {
+        var snowflake = snowflakes[i];
+        snowflake.update();
+      }      
+    }
+
+    // Reset the position of all the snowflakes to a new value
+    if (resetPosition) {
+      browserWidth = document.documentElement.clientWidth;
+      browserHeight = document.documentElement.clientHeight;
+
+      for (var i = 0; i < snowflakes.length; i++) {
+        var snowflake = snowflakes[i];
+
+        snowflake.xPos = getPosition(50, browserWidth);
+        snowflake.yPos = getPosition(50, browserHeight);
+      }
+
+      resetPosition = false;
+    }
+
+    requestAnimationFrame(moveSnowflakes);
+  }
+
+  //
+  // This function returns a number between (maximum - offset) and (maximum + offset)
+  //
+  function getPosition(offset, size) {
+    return Math.round(-1 * offset + Math.random() * (size + 2 * offset));
+  }
+
+  //
+  // Trigger a reset of all the snowflakes' positions
+  //
+  function setResetFlag(e) {
+    resetPosition = true;
+  }
+</script>
 
   
 
